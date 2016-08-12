@@ -1,2 +1,0 @@
-# MicroservicesExample.NET
-MicroservicesExample.NET
