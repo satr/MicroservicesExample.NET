@@ -1,6 +1,6 @@
 ﻿namespace ProductsServiceClient
 {
-    public class Client2
+    public class Client
     {
     }
 }
