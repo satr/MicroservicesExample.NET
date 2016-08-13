@@ -96,17 +96,17 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Services\CustomersService\CustomersService.csproj">
+    <ProjectReference Include="..\..\Components\Common\ServiceCommon\ServiceCommon.csproj">
+      <Project>{F1F30DD3-CCF8-4966-B8CE-3102C293B3E4}</Project>
+      <Name>ServiceCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\Customers\CustomersService\CustomersService.csproj">
       <Project>{CC9498A0-0C45-492A-97F9-7C27C9DBB6BC}</Project>
       <Name>CustomersService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Services\ProductsService\ProductsService.csproj">
+    <ProjectReference Include="..\..\Components\Products\ProductsService\ProductsService.csproj">
       <Project>{7018E3E1-3753-4F19-9EAF-26814013971D}</Project>
       <Name>ProductsService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Services\ServiceCommon\ServiceCommon.csproj">
-      <Project>{F1F30DD3-CCF8-4966-B8CE-3102C293B3E4}</Project>
-      <Name>ServiceCommon</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

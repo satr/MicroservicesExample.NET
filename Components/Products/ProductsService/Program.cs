@@ -1,6 +1,4 @@
-﻿using System;
-using System.Reflection;
-using ServiceCommon;
+﻿using ServiceCommon;
 
 namespace ProductsService
 {
@@ -10,6 +8,5 @@ namespace ProductsService
         {
             ServiceManager.StartInConsole<ProductsServiceStartup>("http://localhost:9000", "api/ping");
         }
-
     }
 }
