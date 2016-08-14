@@ -32,6 +32,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomersService", "Compone
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceCommon", "Components\Common\ServiceCommon\ServiceCommon.csproj", "{F1F30DD3-CCF8-4966-B8CE-3102C293B3E4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Protocol", "Protocol", "{E416FE88-6EC8-4D6D-8C9D-C6073A254446}"
+	ProjectSection(SolutionItems) = preProject
+		Components\Products\Protocol\Product.proto = Components\Products\Protocol\Product.proto
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceClientsIntergrationTestSuite", "ServiceClientsIntergrationTestSuite\ServiceClientsIntergrationTestSuite.csproj", "{7C37824A-46BD-40BD-AC6B-51B20D30538B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +69,10 @@ Global
 		{F1F30DD3-CCF8-4966-B8CE-3102C293B3E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1F30DD3-CCF8-4966-B8CE-3102C293B3E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1F30DD3-CCF8-4966-B8CE-3102C293B3E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C37824A-46BD-40BD-AC6B-51B20D30538B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C37824A-46BD-40BD-AC6B-51B20D30538B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C37824A-46BD-40BD-AC6B-51B20D30538B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C37824A-46BD-40BD-AC6B-51B20D30538B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,5 +87,7 @@ Global
 		{C5D331EF-EFF5-4F1A-BF17-D3DA2A29CC21} = {6F4A61D1-A2EA-4001-9004-41A996BAB237}
 		{CC9498A0-0C45-492A-97F9-7C27C9DBB6BC} = {25B91A53-9E1A-4F53-B2A2-A58518BB0AC6}
 		{F1F30DD3-CCF8-4966-B8CE-3102C293B3E4} = {54C98322-7D1B-4EF7-81E9-68D8906E5849}
+		{E416FE88-6EC8-4D6D-8C9D-C6073A254446} = {6F4A61D1-A2EA-4001-9004-41A996BAB237}
+		{7C37824A-46BD-40BD-AC6B-51B20D30538B} = {CF7B3000-46FE-4ED5-BE52-E01312BE8BC2}
 	EndGlobalSection
 EndGlobal

@@ -11,18 +11,52 @@ namespace ServiceCommon
 {
     public static class ServiceManager
     {
-        public static void StartInConsole<T>(string hostUrl, string tryingRequestPath)
+        const string DefaultHostUrl = "http://localhost:9000";
+        const string DefaultRequestPath = "api/ping";
+
+        public static void StartInConsole<T>(string[] args)
             where T : ServiceStartupBase, new()
         {
-            using (var cancellationTokenSource = ServiceManager.Start<T>(hostUrl))
+            StartInConsole<T>(args.Length > 0? args[0]: DefaultHostUrl, 
+                                    args.Length > 1? args[1]: DefaultRequestPath);
+        }
+
+        public static void StartInConsole<T>(string hostUrl = DefaultHostUrl, string requestPath = DefaultRequestPath) 
+            where T : ServiceStartupBase, new()
+        {
+            try
             {
-                var assemblyName = Assembly.GetEntryAssembly().GetName();
-                Console.Out.WriteLine("Service: {0}", assemblyName.Name);
-                Console.Out.WriteLine("Version: {0}", assemblyName.Version);
-                Console.Out.WriteLine(ServiceManager.TryRequestService(hostUrl, tryingRequestPath));
-                Console.Out.WriteLine("Hit Enter to exit.");
+                using (var cancellationTokenSource = Start<T>(hostUrl))
+                {
+                    var assemblyName = Assembly.GetEntryAssembly().GetName();
+                    Console.Out.WriteLine("Service: {0}", assemblyName.Name);
+                    Console.Out.WriteLine("Version: {0}", assemblyName.Version);
+                    try
+                    {
+                        var response = new HttpClient().GetAsync(new Uri(new Uri(hostUrl), requestPath), cancellationTokenSource.Token).Result;
+                        Console.Out.WriteLine("Status code: {0} (\"{1}\").", (int) response.StatusCode, response.StatusCode);
+                        Console.Out.WriteLine("Respond text: {0}", response.Content.ReadAsStringAsync().Result);
+                        Console.Out.WriteLine("Hit Enter to exit.");
+                    }
+                    catch (Exception e)
+                    {
+                        var builder = new StringBuilder();
+                        builder.AppendLine("Error:");
+                        while (e != null)
+                        {
+                            builder.AppendLine(e.Message);
+                            e = e.InnerException;
+                        }
+                        Console.Out.WriteLine("Error: {0}", builder);
+                    }
+                    Console.ReadKey();
+                    cancellationTokenSource.Cancel();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
                 Console.ReadLine();
-                cancellationTokenSource.Cancel();
             }
         }
 
@@ -40,26 +74,5 @@ namespace ServiceCommon
                                     }, token);
             return tokenSource;
         }
-
-        public static ServiceResponse TryRequestService(string hostUrl, string sequestPath)
-        {
-            try
-            {
-                var response = new HttpClient().GetAsync(new Uri(new Uri(hostUrl), sequestPath)).Result;
-                return new ServiceResponse(response.StatusCode, response.Content.ReadAsStringAsync().Result);
-            }
-            catch (Exception e)
-            {
-                var builder = new StringBuilder();
-                builder.AppendLine("Error:");
-                while (e != null)
-                {
-                    builder.AppendLine(e.Message);
-                    e = e.InnerException;
-                }
-                return new ServiceResponse(HttpStatusCode.ExpectationFailed, builder.ToString());
-            }
-        }
-
     }
 }

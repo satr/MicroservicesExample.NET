@@ -95,6 +95,7 @@
     <Compile Include="Controllers\PingController.cs" />
     <Compile Include="Controllers\V1Controller.cs" />
     <Compile Include="IProductRepository.cs" />
+    <Compile Include="Product.cs" />
     <Compile Include="ProductsRepository.cs" />
     <Compile Include="ProductsServiceStartup.cs" />
     <Compile Include="Program.cs" />
@@ -102,9 +103,11 @@
     <Compile Include="ServiceLocator.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Protocol\Product.proto">
+      <Link>Product.proto</Link>
+    </None>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="Product.proto" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Common\ServiceCommon\ServiceCommon.csproj">

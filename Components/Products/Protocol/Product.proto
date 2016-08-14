@@ -1,0 +1,12 @@
+﻿syntax = "proto3";
+option csharp_namespace = "MicroservicesExample.NET.ProductsService";
+
+message Product {
+	string id = 1;
+	string name = 2;
+	float price = 3;
+}
+
+message ProductSet {
+	repeated Product items = 1;
+}

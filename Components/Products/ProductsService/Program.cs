@@ -6,7 +6,7 @@ namespace ProductsService
     {
         static void Main(string[] args)
         {
-            ServiceManager.StartInConsole<ProductsServiceStartup>("http://localhost:9000", "api/ping");
+            ServiceManager.StartInConsole<ProductsServiceStartup>(args);
         }
     }
 }
