@@ -3,6 +3,6 @@
 namespace ProductsService.Controllers
 {
     public class PingController: PingControllerBase
-    { 
+    {
     }
 }

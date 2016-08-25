@@ -39,6 +39,10 @@
       <HintPath>..\packages\Google.Protobuf.3.0.0\lib\net45\Google.Protobuf.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.4.1\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -47,22 +51,31 @@
         <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
       </ItemGroup>
     </When>
-    <Otherwise>
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
-      </ItemGroup>
-    </Otherwise>
+    <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Mother.cs" />
     <Compile Include="ProductsServiceClientTestCases.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Components\Common\ServiceCommon\ServiceCommon.csproj">
+    <ProjectReference Include="..\..\ClientCommon\ClientCommon.csproj">
+      <Project>{6929da04-bc22-487d-a38b-3b2bd9989dc1}</Project>
+      <Name>ClientCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Common.csproj">
+      <Project>{08cf5d49-4132-46eb-b730-d25d563b02fb}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\Common\ServiceCommon\ServiceCommon.csproj">
       <Project>{F1F30DD3-CCF8-4966-B8CE-3102C293B3E4}</Project>
       <Name>ServiceCommon</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Components\Products\ProductsClient\ProductsServiceClient.csproj">
+    <ProjectReference Include="..\..\Components\Common\TestTools\TestTools.csproj">
+      <Project>{1B5FE866-B77F-477B-AA2D-93EACC28AFFD}</Project>
+      <Name>TestTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\Products\ProductsClient\ProductsServiceClient.csproj">
       <Project>{c5d331ef-eff5-4f1a-bf17-d3da2a29cc21}</Project>
       <Name>ProductsServiceClient</Name>
     </ProjectReference>

@@ -45,6 +45,10 @@
       <HintPath>..\..\..\packages\Google.Protobuf.3.0.0\lib\net45\Google.Protobuf.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
       <Private>True</Private>
@@ -57,8 +61,8 @@
       <HintPath>..\..\..\packages\Microsoft.Owin.Hosting.3.0.1\lib\net45\Microsoft.Owin.Hosting.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
@@ -92,32 +96,42 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\ManagementController.cs" />
     <Compile Include="Controllers\PingController.cs" />
     <Compile Include="Controllers\V1Controller.cs" />
-    <Compile Include="IProductRepository.cs" />
+    <Compile Include="DataLayer\IProductsDbContext.cs" />
+    <Compile Include="DataLayer\IProductsRepository.cs" />
+    <Compile Include="DataLayer\MemoryDbSet.cs" />
+    <Compile Include="DataLayer\RepositoryBase.cs" />
+    <Compile Include="DataLayer\TestProductsDbContext.cs" />
     <Compile Include="Product.cs" />
-    <Compile Include="ProductsRepository.cs" />
+    <Compile Include="DataLayer\ProductsDbContext.cs" />
+    <Compile Include="DataLayer\ProductsRepository.cs" />
     <Compile Include="ProductsServiceStartup.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceLocator.cs" />
+    <Compile Include="Validators\ProductValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Protocol\Product.proto">
       <Link>Product.proto</Link>
     </None>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Common.csproj">
+      <Project>{08cf5d49-4132-46eb-b730-d25d563b02fb}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Common\ServiceCommon\ServiceCommon.csproj">
       <Project>{f1f30dd3-ccf8-4966-b8ce-3102c293b3e4}</Project>
       <Name>ServiceCommon</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataLayer\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

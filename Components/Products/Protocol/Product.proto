@@ -8,5 +8,5 @@ message Product {
 }
 
 message ProductSet {
-	repeated Product items = 1;
+	repeated Product items = 4;
 }

@@ -11,12 +11,15 @@ namespace ServiceCommon
     {
         public void Configuration(IAppBuilder appBuilder)
         {
-            // Configure Web API for self-host. 
-            HttpConfiguration config = new HttpConfiguration();
+            var config = new HttpConfiguration();
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
+            );
+            config.Routes.MapHttpRoute(
+                name: "ManagementApi",
+                routeTemplate: "api/{controller}/{action}"
             );
 
             appBuilder.UseWebApi(config);

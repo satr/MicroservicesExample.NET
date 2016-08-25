@@ -2,24 +2,33 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading;
-using Google.Protobuf;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using ProductsServiceClient;
 
 namespace ServiceClientsIntergrationTestSuite
 {
-    [TestClass]
+    [TestFixture]
     public class ProductsServiceClientTestCases
     {
         private static Process _process;
-        const string DefaultHostUrl = "http://localhost:9000";
-        const string DefaultRequestPath = "api/ping";
+        private static Client _client;
+        private const string DefaultHostUrl = "http://localhost:9003";
+        private const string DefaultApiPingPath = "api/ping";
+        private const string ApiPath = "api/v1";
 
-        [ClassInitialize]
-        public static void ClassSetup(TestContext testContext)
+        [OneTimeSetUp]
+        public void ClassSetup()
         {
-            var servicePath = @"..\..\..\Components\Products\ProductsService\bin\Debug\ProductsService.exe";
+            
+#if DEBUG
+            var folderName = new FileInfo(GetType().Assembly.CodeBase.Substring(8)).DirectoryName;
+            if(string.IsNullOrWhiteSpace(folderName))
+                Assert.Fail("Service executable file is not found.");
+
+            var servicePath = Path.Combine(folderName, @"..\..\..\..\Components\Products\ProductsService\bin\Debug\ProductsService.exe");
+#else
+            var servicePath = @"..\..\..\Components\Products\ProductsService\bin\Release\ProductsService.exe";
+#endif
             if (!File.Exists(servicePath))
             {
                 Assert.Fail("Service executable file is not found.");
@@ -33,12 +42,13 @@ namespace ServiceClientsIntergrationTestSuite
                 RedirectStandardInput = true,
                 ErrorDialog = false,
                 UseShellExecute = false,
-                Arguments = $"{DefaultHostUrl} {DefaultRequestPath}",
+                Arguments = $"{DefaultHostUrl} {DefaultApiPingPath} -test2",
             };
             _process = new Process {StartInfo = processStartInfo};
             try
             {
                 _process.Start();
+                _client = new Client(DefaultHostUrl, ApiPath);
             }
             catch (Exception e)
             {
@@ -46,8 +56,8 @@ namespace ServiceClientsIntergrationTestSuite
             }
         }
 
-        [ClassCleanup]
-        public static void ClassTearDown()
+        [OneTimeTearDown]
+        public void ClassTearDown()
         {
             _process.StandardInput.WriteLine("");//"hit" Enter to exit the service.
             _process.WaitForExit(1000);
@@ -56,16 +66,26 @@ namespace ServiceClientsIntergrationTestSuite
             _process.Close();
         }
 
-        [TestMethod]
+        [Test]
         public void GetAllProductsTest()
         {
-            var products = new Client(DefaultHostUrl).GetAllProducts().Result;
+            var products = _client.GetAllProducts().Result;
             Assert.IsNotNull(products);
             Assert.IsTrue(products.Count > 0);
             var product = products.FirstOrDefault();
             Assert.IsNotNull(product);
             Assert.IsFalse(string.IsNullOrWhiteSpace(product.Id));
             Assert.IsFalse(string.IsNullOrWhiteSpace(product.Name));
+        }
+
+        [Test]
+        public void AddNewProduct()
+        {
+            var product = Mother.CreateProduct();
+
+            var operationResult = _client.Save(product).Result;
+
+            Assert.IsTrue(operationResult.Success);
         }
     }
 }

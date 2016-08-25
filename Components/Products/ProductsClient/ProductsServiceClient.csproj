@@ -34,6 +34,10 @@
       <HintPath>..\..\..\packages\Google.Protobuf.3.0.0\lib\net45\Google.Protobuf.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -52,15 +56,20 @@
     <None Include="..\Protocol\Product.proto">
       <Link>Product.proto</Link>
     </None>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\ServiceCommon\ServiceCommon.csproj">
-      <Project>{F1F30DD3-CCF8-4966-B8CE-3102C293B3E4}</Project>
-      <Name>ServiceCommon</Name>
+    <ProjectReference Include="..\..\..\ClientCommon\ClientCommon.csproj">
+      <Project>{6929da04-bc22-487d-a38b-3b2bd9989dc1}</Project>
+      <Name>ClientCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\Common.csproj">
+      <Project>{08cf5d49-4132-46eb-b730-d25d563b02fb}</Project>
+      <Name>Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

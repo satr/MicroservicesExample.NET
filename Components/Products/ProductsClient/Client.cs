@@ -1,32 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using ClientCommon;
+using Google.Protobuf;
 using MicroservicesExample.NET.ProductsService;
+using ServiceCommon;
 
 namespace ProductsServiceClient
 {
-    public class Client
+    public class Client: ClientBase
     {
-        private readonly string _hostUrl;
-        private readonly HttpClient _httpClient = new HttpClient();
-
-        public Client(string hostUrl)
+        public Client(string hostUrl, string apiPath) : base(hostUrl, apiPath)
         {
-            _hostUrl = hostUrl;
         }
 
         public async Task<IList<Product>> GetAllProducts()
         {
-            var products = new List<Product>();
-            using (var response = await _httpClient.GetAsync(new Uri(new Uri(_hostUrl), "api/V1")))
+            using (var response = await GetAsync(ApiPath))
             {
                 var productSet = ProductSet.Parser.ParseFrom(await response.Content.ReadAsStreamAsync());
-                if (productSet != null)
-                    products = productSet.Items.ToList();
+                return productSet.Items.ToList();
             }
-            return products;
+        }
+
+        public async Task<OperationResult> Save(IMessage product)
+        {
+            return await PutAsync(product, ApiPath);
         }
     }
 }

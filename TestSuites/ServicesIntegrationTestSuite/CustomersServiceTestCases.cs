@@ -1,35 +1,37 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
-using CustomersService;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ServiceCommon;
+using log4net;
+using NUnit.Framework;
+using ProductsService;
 
 namespace ServicesIntegrationTestSuite
 {
-    [TestClass]
+    [TestFixture]
     public class CustomersServiceTestCases : ServiceTestCasesBase
     {
-        private static HttpClient _httpClient;
+        private static readonly ILog Log = LogManager.GetLogger(typeof(CustomersServiceTestCases));
+        private HttpClient _httpClient;
 
-        [ClassInitialize]
-        public static void SetupClass(TestContext testContext)
+        [OneTimeSetUp]
+        public void Setup()
         {
-            StartService<CustomersServiceStartup>();
+            Log.Debug("---------------- Started test cases session ----------------");
+            StartService<ProductsServiceStartup>("http://localhost:9001");
             _httpClient = new HttpClient();
         }
 
-        [ClassCleanup]
-        public static void TearDownClass()
+        [OneTimeTearDown]
+        public void TearDownClass()
         {
             StopService();
             _httpClient?.Dispose();
+            Log.Debug("---------------- Stopped test cases session ----------------");
         }
 
-        [TestMethod]
+        [Test]
         public void TestPing()
         {
-            var serviceResponse = _httpClient.GetAsync(new UriBuilder(HostUrl) { Path = "api/ping" }.Uri).Result;
+            var serviceResponse = _httpClient.GetAsync(GetRequestUri("api/ping")).Result;
             Assert.AreEqual(HttpStatusCode.OK, serviceResponse.StatusCode);
             Assert.IsFalse(string.IsNullOrWhiteSpace(serviceResponse.Content.ReadAsStringAsync().Result));
         }

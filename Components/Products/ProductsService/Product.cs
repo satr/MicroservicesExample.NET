@@ -24,7 +24,7 @@ namespace MicroservicesExample.NET.ProductsService {
           string.Concat(
             "Cg1Qcm9kdWN0LnByb3RvIjIKB1Byb2R1Y3QSCgoCaWQYASABKAkSDAoEbmFt",
             "ZRgCIAEoCRINCgVwcmljZRgDIAEoAiIlCgpQcm9kdWN0U2V0EhcKBWl0ZW1z",
-            "GAEgAygLMgguUHJvZHVjdEIrqgIoTWljcm9zZXJ2aWNlc0V4YW1wbGUuTkVU",
+            "GAQgAygLMgguUHJvZHVjdEIrqgIoTWljcm9zZXJ2aWNlc0V4YW1wbGUuTkVU",
             "LlByb2R1Y3RzU2VydmljZWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
@@ -243,9 +243,9 @@ namespace MicroservicesExample.NET.ProductsService {
     }
 
     /// <summary>Field number for the "items" field.</summary>
-    public const int ItemsFieldNumber = 1;
+    public const int ItemsFieldNumber = 4;
     private static readonly pb::FieldCodec<global::MicroservicesExample.NET.ProductsService.Product> _repeated_items_codec
-        = pb::FieldCodec.ForMessage(10, global::MicroservicesExample.NET.ProductsService.Product.Parser);
+        = pb::FieldCodec.ForMessage(34, global::MicroservicesExample.NET.ProductsService.Product.Parser);
     private readonly pbc::RepeatedField<global::MicroservicesExample.NET.ProductsService.Product> items_ = new pbc::RepeatedField<global::MicroservicesExample.NET.ProductsService.Product>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::MicroservicesExample.NET.ProductsService.Product> Items {
@@ -309,7 +309,7 @@ namespace MicroservicesExample.NET.ProductsService {
           default:
             input.SkipLastField();
             break;
-          case 10: {
+          case 34: {
             items_.AddEntriesFrom(input, _repeated_items_codec);
             break;
           }
