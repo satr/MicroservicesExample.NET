@@ -74,50 +74,95 @@ namespace Common.Service
             {
                 var log = LogManager.GetLogger(typeof(T));
                 log.Info($"Start a self-hosting service on URL: {hostUrl}.");
-                using (var cancellationTokenSource = Start<T>(hostUrl))
+                var startedServiceWaitHandle = new AutoResetEvent(false);
+                using (var cancellationTokenSource = Start<T>(hostUrl, startedServiceWaitHandle))
                 {
                     var assemblyName = Assembly.GetEntryAssembly().GetName();
-                    Console.Out.WriteLine($"Service: {assemblyName.Name}");
-                    Console.Out.WriteLine($"Version: {assemblyName.Version}");
+                    WriteLine(log, $"Service: {assemblyName.Name}");
+                    WriteLine(log, $"Version: {assemblyName.Version}");
+                    Console.Out.WriteLine($"Usage: {assemblyName.Name} [hosturl:<HostUrl>] [path:<ApiPingPath>] [-test]");
+                    Console.Out.WriteLine($"Options:");
+                    Console.Out.WriteLine($"  hosturl:<HostUrl>  : (optional) where <HostUrl> is the host URL of the service. Example: http://localhost:9000");
+                    Console.Out.WriteLine($"  path:<ApiPingPath> : (optional) where <ApiPingPath> is a path for request. Example: api/ping");
+                    Console.Out.WriteLine($"  -test              : (optional) set an in-memory test repository within the service");
+                    if (!WaitWhileServiceStarted(startedServiceWaitHandle, cancellationTokenSource, log))
+                        return;
                     try
                     {
-                        var httpClient = new HttpClient();
-                        var requestUri = GetRequestUri(hostUrl, requestPath);
-                        WriteLine(log, $"Ping the service: {requestUri}.");
-                        var response = httpClient.GetAsync(requestUri, cancellationTokenSource.Token).Result;
-                        WriteLine(log, $"Status code: {(int) response.StatusCode} (\"{response.StatusCode}\").");
-                        WriteLine(log, $"Respond text: {response.Content.ReadAsStringAsync().Result}");
-                        if (parameters.Contains("-test"))
-                        {
-                            var responseMessage = httpClient.PostAsync(GetRequestUri(hostUrl, "api/management/settestrepo"), new StringContent(string.Empty), cancellationTokenSource.Token).Result;
-                            WriteLine(log,(int) responseMessage.StatusCode < 300
-                                            ? "Set test repository"
-                                            : $"Failed to set test repository {responseMessage.Content.ReadAsStringAsync().Result}");
-                        }
+                        ValidateServiceWithPing(hostUrl, requestPath, parameters, log, cancellationTokenSource);
+                        Console.Out.WriteLine("Service is running.");//this message is used in integration-tests to ensure the service is up-and-running
                         Console.Out.WriteLine("Hit Enter to exit.");
                     }
                     catch (Exception e)
                     {
                         log.Error(e);
-                        var builder = new StringBuilder();
-                        builder.AppendLine("Error:");
-                        while (e != null)
-                        {
-                            builder.AppendLine(e.Message);
-                            e = e.InnerException;
-                        }
-                        Console.Out.WriteLine($"Error: {builder}");
+                        ShowError(e);
                     }
-                    Console.In.ReadLine();
+                    WaitForKeyPressInConsole();
                     log.Info($"Stop a self-hosting service on URL: {hostUrl}.");
                     cancellationTokenSource.Cancel();
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                Console.In.ReadLine();
+                ShowError(e);
+                WaitForKeyPressInConsole();
             }
+        }
+
+        private static void WaitForKeyPressInConsole()
+        {
+            Console.In.ReadLine();
+        }
+
+        private static void ShowError(Exception e)
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine("Error:");
+            while (e != null)
+            {
+                builder.AppendLine(e.Message);
+                e = e.InnerException;
+            }
+            Console.Out.WriteLine($"Error: {builder}");
+        }
+
+        private static bool WaitWhileServiceStarted(WaitHandle startedServiceWaitHandle, CancellationTokenSource cancellationTokenSource, ILog log)
+        {
+            const int serviceStartTimeoutSeconds = 5;
+            if (startedServiceWaitHandle.WaitOne(TimeSpan.FromSeconds(serviceStartTimeoutSeconds)))
+                return true;
+            WriteLine(log, $"Service was not able to start within {serviceStartTimeoutSeconds} seconds.");
+            cancellationTokenSource.Cancel();
+            cancellationTokenSource.Token.WaitHandle.WaitOne(TimeSpan.FromSeconds(1)); //wait in case it takes time to stop
+            return false;
+        }
+
+        private static void ValidateServiceWithPing(string hostUrl, string requestPath, ICollection<string> parameters, ILog log,
+            CancellationTokenSource cancellationTokenSource) 
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var requestUri = GetRequestUri(hostUrl, requestPath);
+                WriteLine(log, $"Ping the service: {requestUri}.");
+
+                var response = httpClient.GetAsync(requestUri, cancellationTokenSource.Token).Result;
+                WriteLine(log, $"Status code: {(int) response.StatusCode} (\"{response.StatusCode}\").");
+                WriteLine(log, $"Respond text: {response.Content.ReadAsStringAsync().Result}");
+
+                if (parameters.Contains("-test"))
+                    SetTestRepositoryInService(httpClient, hostUrl, cancellationTokenSource, log);
+            }
+        }
+
+        private static void SetTestRepositoryInService(HttpClient httpClient, string hostUrl, CancellationTokenSource cancellationTokenSource, ILog log)
+        {
+            var requestUri = GetRequestUri(hostUrl, "api/management/settestrepo");
+            var responseMessage = httpClient.PostAsync(requestUri, new StringContent(string.Empty), cancellationTokenSource.Token)
+                                            .Result;
+            WriteLine(log, (int) responseMessage.StatusCode < 300
+                                ? "Set test repository"
+                                : $"Failed to set test repository {responseMessage.Content.ReadAsStringAsync().Result}");
         }
 
         private static void WriteLine(ILog log, string message)
@@ -132,6 +177,12 @@ namespace Common.Service
         }
 
         public static CancellationTokenSource Start<T>(string hostUrl)
+            where T : ServiceStartupBase, new()
+        {
+            return Start<T>(hostUrl, null);
+        }
+
+        public static CancellationTokenSource Start<T>(string hostUrl, EventWaitHandle serviceStartedWaitHandle)
             where T: ServiceStartupBase, new()
         {
             var log = LogManager.GetLogger(typeof(T));
@@ -142,6 +193,7 @@ namespace Common.Service
                                         using (WebApp.Start<T>(url: hostUrl))
                                         {
                                             log.Debug("Service started.");
+                                            serviceStartedWaitHandle?.Set();
                                             token.WaitHandle.WaitOne();
                                             log.Debug("Service stopped.");
                                         }

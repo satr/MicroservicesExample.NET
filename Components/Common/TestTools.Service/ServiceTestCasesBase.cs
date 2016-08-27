@@ -46,7 +46,11 @@ namespace TestTools.Service
         {
             Log = LogManager.GetLogger(GetType());
             HostUrl = httpLocalhost;
-            _cancellationTokenSource = ServiceManager.Start<T>(HostUrl);
+            var serviceStartedWaitHandle = new AutoResetEvent(false);
+            _cancellationTokenSource = ServiceManager.Start<T>(HostUrl, serviceStartedWaitHandle);
+            const int waitServiceTimeoutSeconds = 5;
+            if(!serviceStartedWaitHandle.WaitOne(TimeSpan.FromSeconds(waitServiceTimeoutSeconds)))
+                throw new InvalidOperationException($"Sevice {typeof(T)} was not able to start within {waitServiceTimeoutSeconds} seconds.");
             Log.Debug($"Service started in test cases on URL: {HostUrl}.");
         }
 

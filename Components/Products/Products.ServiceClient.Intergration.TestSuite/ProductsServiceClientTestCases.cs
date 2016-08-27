@@ -31,6 +31,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using NUnit.Framework;
 
 namespace Products.ServiceClient.Intergration.TestSuite
@@ -40,6 +41,7 @@ namespace Products.ServiceClient.Intergration.TestSuite
     {
         private static Process _process;
         private static Client _client;
+        private AutoResetEvent _startServiceEventHandler;
         private const string DefaultHostUrl = "http://localhost:9003";
         private const string DefaultApiPingPath = "api/ping";
         private const string ApiPath = "api/v1";
@@ -47,7 +49,7 @@ namespace Products.ServiceClient.Intergration.TestSuite
         [OneTimeSetUp]
         public void ClassSetup()
         {
-            
+            _startServiceEventHandler = new AutoResetEvent(false);
             var folderName = new FileInfo(GetType().Assembly.CodeBase.Substring(8)).DirectoryName;
             if(string.IsNullOrWhiteSpace(folderName))
                 Assert.Fail("TestSuite dll file is not found.");
@@ -70,12 +72,33 @@ namespace Products.ServiceClient.Intergration.TestSuite
                 RedirectStandardInput = true,
                 ErrorDialog = false,
                 UseShellExecute = false,
-                Arguments = $"{DefaultHostUrl} {DefaultApiPingPath} -test2",
+                Arguments = $"hosturl:{DefaultHostUrl} path:{DefaultApiPingPath} -test",
             };
             _process = new Process {StartInfo = processStartInfo};
             try
             {
-                _process.Start();
+                Debug.WriteLine("--------------------------------------------------------------------------------");
+                Debug.WriteLine($" Start service {DateTime.Now:s}");
+                Debug.WriteLine($"-----------");
+                var stopwatch = new Stopwatch();
+                stopwatch.Start();
+                try
+                {
+                    _process.Start();
+                    _process.BeginOutputReadLine();
+                    _process.OutputDataReceived += OnProcessOnOutputDataReceived;
+                    const int startServiceTimeoutSeconds = 10;
+                    if(!_startServiceEventHandler.WaitOne(TimeSpan.FromSeconds(startServiceTimeoutSeconds)))
+                        throw new InvalidOperationException($"The service was not started within {startServiceTimeoutSeconds} seconds.");
+
+                }
+                finally
+                {
+                    stopwatch.Stop();
+                }
+                Debug.WriteLine($"-----------");
+                Debug.WriteLine($"Service started {DateTime.Now:s} (diring {stopwatch.Elapsed:g})");
+                Debug.WriteLine($"-----------");
                 _client = new Client(DefaultHostUrl, ApiPath);
             }
             catch (Exception e)
@@ -84,11 +107,22 @@ namespace Products.ServiceClient.Intergration.TestSuite
             }
         }
 
+        private void OnProcessOnOutputDataReceived(object sender, DataReceivedEventArgs args)
+        {
+            var message = args.Data;
+            if (message == "Service is running.")
+                _startServiceEventHandler.Set();//signal that the service is up and running
+            Debug.WriteLine(message);
+        }
+
         [OneTimeTearDown]
         public void ClassTearDown()
         {
+            Debug.WriteLine($"-------------------- Stop service {DateTime.Now:s} ----------------------");
+            Debug.WriteLine("");
             if (_process == null)
                 return;
+            _process.OutputDataReceived -= OnProcessOnOutputDataReceived;
             _process.StandardInput.WriteLine("");//"hit" Enter to exit the service.
             _process.WaitForExit(1000);
             if(!_process.HasExited)

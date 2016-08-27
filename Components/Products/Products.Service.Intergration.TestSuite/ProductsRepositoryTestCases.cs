@@ -52,7 +52,8 @@ namespace Products.Service.Integration.TestSuite
         }
 
 
-        [Test, Ignore("Testing the repository connected to the real DB")]
+        [Test]
+        [Ignore("Testing the repository connected to the real DB")]
         public void CreateNewProduct()
         {
             var id = Guid.NewGuid().ToString();

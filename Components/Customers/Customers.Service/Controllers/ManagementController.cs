@@ -27,7 +27,10 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion
+
+using Common;
 using Common.Service.Controllers;
+using Customers.Service.DataLayer;
 
 namespace Customers.Service.Controllers
 {
@@ -35,6 +38,7 @@ namespace Customers.Service.Controllers
     {
         protected override void SetTestRepo()
         {
+            ServiceLocator.Get<ICustomersRepository>().Set(new TestCustomersDbContext());
         }
     }
 }
