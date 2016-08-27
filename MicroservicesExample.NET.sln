@@ -40,9 +40,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Customers.Service", "Compon
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.WPF", "Apps\App.WPF\App.WPF.csproj", "{D0BDDF80-C350-433A-9688-B037253625B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Customers.Service.Integration.TestSuite", "Components\Customers\Customers.Service.Integration.TestSuite\Customers.Service.Integration.TestSuite.csproj", "{A5DE1383-BEDB-41EA-8982-1B8D72720989}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTools.Service", "Components\Common\TestTools.Service\TestTools.Service.csproj", "{53618B4D-BEAE-4EF5-948B-8FA0E7BE86F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Customers.Service.Integration.TestSuite", "Components\Customers\Customers.Service.Integration.TestSuite\Customers.Service.Integration.TestSuite.csproj", "{0B08156F-62C9-4575-B974-756A6AF1D871}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Protocol", "Protocol", "{A28F9ADA-B9D1-4017-92EA-265D081985FF}"
+	ProjectSection(SolutionItems) = preProject
+		Components\Customers\Protocol\Customer.proto = Components\Customers\Protocol\Customer.proto
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.DataLayer", "Components\Common\Common.DataLayer\Common.DataLayer.csproj", "{6DA05047-4F65-407D-8675-B83E881493A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -94,14 +101,18 @@ Global
 		{D0BDDF80-C350-433A-9688-B037253625B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0BDDF80-C350-433A-9688-B037253625B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0BDDF80-C350-433A-9688-B037253625B7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A5DE1383-BEDB-41EA-8982-1B8D72720989}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A5DE1383-BEDB-41EA-8982-1B8D72720989}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A5DE1383-BEDB-41EA-8982-1B8D72720989}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A5DE1383-BEDB-41EA-8982-1B8D72720989}.Release|Any CPU.Build.0 = Release|Any CPU
 		{53618B4D-BEAE-4EF5-948B-8FA0E7BE86F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{53618B4D-BEAE-4EF5-948B-8FA0E7BE86F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53618B4D-BEAE-4EF5-948B-8FA0E7BE86F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53618B4D-BEAE-4EF5-948B-8FA0E7BE86F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B08156F-62C9-4575-B974-756A6AF1D871}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B08156F-62C9-4575-B974-756A6AF1D871}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B08156F-62C9-4575-B974-756A6AF1D871}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B08156F-62C9-4575-B974-756A6AF1D871}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DA05047-4F65-407D-8675-B83E881493A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DA05047-4F65-407D-8675-B83E881493A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DA05047-4F65-407D-8675-B83E881493A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DA05047-4F65-407D-8675-B83E881493A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -122,7 +133,9 @@ Global
 		{7C37824A-46BD-40BD-AC6B-51B20D30538B} = {6F4A61D1-A2EA-4001-9004-41A996BAB237}
 		{CC9498A0-0C45-492A-97F9-7C27C9DBB6BC} = {25B91A53-9E1A-4F53-B2A2-A58518BB0AC6}
 		{D0BDDF80-C350-433A-9688-B037253625B7} = {6F866480-E89D-4599-ACB5-56742F445DB3}
-		{A5DE1383-BEDB-41EA-8982-1B8D72720989} = {25B91A53-9E1A-4F53-B2A2-A58518BB0AC6}
 		{53618B4D-BEAE-4EF5-948B-8FA0E7BE86F2} = {54C98322-7D1B-4EF7-81E9-68D8906E5849}
+		{0B08156F-62C9-4575-B974-756A6AF1D871} = {25B91A53-9E1A-4F53-B2A2-A58518BB0AC6}
+		{A28F9ADA-B9D1-4017-92EA-265D081985FF} = {25B91A53-9E1A-4F53-B2A2-A58518BB0AC6}
+		{6DA05047-4F65-407D-8675-B83E881493A4} = {54C98322-7D1B-4EF7-81E9-68D8906E5849}
 	EndGlobalSection
 EndGlobal

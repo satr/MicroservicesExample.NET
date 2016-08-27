@@ -108,11 +108,13 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Products.Service.Intergration.TestSuite.licenseheader" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common.DataLayer\Common.DataLayer.csproj">
+      <Project>{6DA05047-4F65-407D-8675-B83E881493A4}</Project>
+      <Name>Common.DataLayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Common\Common.Service\Common.Service.csproj">
       <Project>{F1F30DD3-CCF8-4966-B8CE-3102C293B3E4}</Project>
       <Name>Common.Service</Name>

@@ -101,8 +101,6 @@
     <Compile Include="Controllers\V1Controller.cs" />
     <Compile Include="DataLayer\IProductsDbContext.cs" />
     <Compile Include="DataLayer\IProductsRepository.cs" />
-    <Compile Include="DataLayer\MemoryDbSet.cs" />
-    <Compile Include="DataLayer\RepositoryBase.cs" />
     <Compile Include="DataLayer\TestProductsDbContext.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="DataLayer\ProductsDbContext.cs" />
@@ -120,8 +118,13 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="Products.Service.licenseheader" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common.DataLayer\Common.DataLayer.csproj">
+      <Project>{6DA05047-4F65-407D-8675-B83E881493A4}</Project>
+      <Name>Common.DataLayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Common\Common.Service\Common.Service.csproj">
       <Project>{F1F30DD3-CCF8-4966-B8CE-3102C293B3E4}</Project>
       <Name>Common.Service</Name>

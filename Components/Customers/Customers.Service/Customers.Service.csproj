@@ -33,6 +33,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Protobuf, Version=3.0.0.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Google.Protobuf.3.0.0\lib\net45\Google.Protobuf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
@@ -62,6 +74,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
@@ -86,15 +99,30 @@
     <Compile Include="Controllers\ManagementController.cs" />
     <Compile Include="Controllers\PingController.cs" />
     <Compile Include="Controllers\V1Controller.cs" />
+    <Compile Include="Customer.cs" />
     <Compile Include="CustomersServiceStartup.cs" />
+    <Compile Include="DataLayer\ICustomersDbContext.cs" />
+    <Compile Include="DataLayer\ICustomersRepository.cs" />
+    <Compile Include="DataLayer\CustomersDbContext.cs" />
+    <Compile Include="DataLayer\CustomersRepository.cs" />
+    <Compile Include="DataLayer\TestCustomersDbContext.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validators\CustomerValidator.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Protocol\Customer.proto">
+      <Link>Customer.proto</Link>
+    </None>
     <None Include="App.config" />
+    <None Include="Customers.Service.licenseheader" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common.DataLayer\Common.DataLayer.csproj">
+      <Project>{6da05047-4f65-407d-8675-b83e881493a4}</Project>
+      <Name>Common.DataLayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Common\Common.Service\Common.Service.csproj">
       <Project>{F1F30DD3-CCF8-4966-B8CE-3102C293B3E4}</Project>
       <Name>Common.Service</Name>

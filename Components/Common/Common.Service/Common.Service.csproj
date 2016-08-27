@@ -97,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Common.Service.licenseheader" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

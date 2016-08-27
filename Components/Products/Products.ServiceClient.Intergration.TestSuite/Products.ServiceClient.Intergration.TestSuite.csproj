@@ -79,6 +79,8 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Products.ServiceClient.Intergration.TestSuite.licenseheader" />
+    <None Include="Products.ServiceClient.Intergration.TestSuite2.licenseheader" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -1,5 +1,5 @@
 ﻿syntax = "proto3";
-option csharp_namespace = "MicroservicesExample.NET.Products.Service";
+option csharp_namespace = "Products.Service";
 
 message Product {
 	string id = 1;

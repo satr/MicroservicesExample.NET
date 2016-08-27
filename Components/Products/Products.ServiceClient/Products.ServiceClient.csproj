@@ -58,6 +58,7 @@
     </None>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Products.ServiceClient.licenseheader" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

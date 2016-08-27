@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="TestTools.Service.licenseheader" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common.Service\Common.Service.csproj">
